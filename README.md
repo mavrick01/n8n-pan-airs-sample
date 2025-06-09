@@ -9,10 +9,11 @@ This n8n workflow implements a conversational AI agent with a focus on security 
 
 ### Prisma AIRS Node 
 * This is the reusable node. It returns presentable responses (you could call the API yourself and handle it seperately - this is done in Prisma AIRS Node)
-
+![n8n layout of Prisma AIRS Node](images/Prisma%20AIRS%20Node.png)
 
 ### Prisma AIRS Example
 * This node calls Prisma AIRS Node. 
+![n8n layout of Prisma AIRS Example](images/Prisma%20AIRS%20Example.png)
 
 The agent's primary initial goal is to be able to convert contents to uppercase:
 1.  It has "Simple Memory" to the agent to remember the conversation
@@ -36,6 +37,7 @@ The agent's primary initial goal is to be able to convert contents to uppercase:
 
 ### Prisma AIRS 
 * This is what it would look like if you called the API yourself
+![n8n layout of Prisma AIRS standalone example](images/Prisma%20AIRS.png)
 
 ## Key Setup requirements
 * AIRS API token for the Header Authentication
