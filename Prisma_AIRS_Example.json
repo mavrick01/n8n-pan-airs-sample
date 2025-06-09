@@ -1,0 +1,516 @@
+{
+  "name": "Prisma AIRS Example",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        100
+      ],
+      "id": "701eeb8b-d411-4025-afea-445604511c8c",
+      "name": "Chat Input",
+      "webhookId": "eeebd659-401b-45ea-9234-97b6b2042463"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant. Use tools if they make sense else respond as a helpful assistant\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        912,
+        0
+      ],
+      "id": "7eb77f96-5e0d-44b1-8620-066d7a434fe8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1000,
+        220
+      ],
+      "id": "345c38a1-2e44-4fe0-9a93-7b7d5253ff8d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        1120,
+        220
+      ],
+      "id": "5a50a085-6bc5-41bc-bfa3-354d867bd2d4",
+      "name": "ToUppercase"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "27116c2d-511c-4c01-aa2a-136eb757ab7b",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "allow",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "f45bf171-de4b-4923-80f2-55e4885de5d5",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        100
+      ],
+      "id": "590b20c6-9bbf-4cf1-8373-6e37c41535fa",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "58a59e85-0509-483e-ad54-b1384d8c71bb",
+              "name": "sessionId",
+              "value": "={{ $('Chat Input').item.json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "79ff7d71-30b1-409a-af06-f23ca64a813a",
+              "name": "action",
+              "value": "={{ $('Chat Input').item.json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "06bcb15b-64f6-45f4-84f1-d72e97e81214",
+              "name": "chatInput",
+              "value": "={{ $json.action == \"allow\" ? $('Chat Input').item.json.chatInput : $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        0
+      ],
+      "id": "d7d4f32b-132b-40ea-9d8a-196093842b98",
+      "name": "Restore Prompt"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "VQ75oZUq8rD90lJ7",
+          "mode": "list",
+          "cachedResultName": "Prisma AIRS Node"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "inputType": "response",
+            "inputValue": "={{ $json.output }}",
+            "SessionId": "={{ $('Restore Prompt').item.json.sessionId }}",
+            "profileName": "response-profile",
+            "context": "Do not talk about Twitter"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "inputType",
+              "displayName": "inputType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "inputValue",
+              "displayName": "inputValue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "SessionId",
+              "displayName": "SessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "profileName",
+              "displayName": "profileName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1320,
+        0
+      ],
+      "id": "9ee600dd-439e-42d6-89a8-c44f1987ff1d",
+      "name": "AIRS Response Check"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "741d95eb-9c0b-4bdc-9575-08690aa2f465",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1540,
+        0
+      ],
+      "id": "5b3d08aa-b6d6-47c0-be33-e7ae7899416b",
+      "name": "Format Output"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "VQ75oZUq8rD90lJ7",
+          "mode": "list",
+          "cachedResultName": "Prisma AIRS Node"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "inputType": "prompt",
+            "inputValue": "={{ $json.chatInput }}",
+            "SessionId": "={{ $json.sessionId }}",
+            "profileName": "prompt-profile"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "inputType",
+              "displayName": "inputType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "inputValue",
+              "displayName": "inputValue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "SessionId",
+              "displayName": "SessionId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "profileName",
+              "displayName": "profileName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        220,
+        100
+      ],
+      "id": "48fa5c6c-d039-4e5e-9d2d-0f20b1c5c369",
+      "name": "AIRS Prompt Check"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "741d95eb-9c0b-4bdc-9575-08690aa2f465",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        200
+      ],
+      "id": "b092c791-8a0b-49ed-87b7-4e87a2317e5f",
+      "name": "Return Block Message"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "llama3.2:latest",
+          "mode": "list",
+          "cachedResultName": "llama3.2:latest"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        880,
+        220
+      ],
+      "id": "651c839e-43a2-46b7-9c9c-9cef7acc3961",
+      "name": "Ollama via OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "EuQCO06tqNpsckIp",
+          "name": "Ollama via OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## AIRS Prompt Check\nValidate the prompt does not have any prompt injections, malicious url's, sensirtive data, toxic content or contextually bad data`  ",
+        "height": 540,
+        "width": 620,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        200,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "a91db074-c7bb-408c-bbcf-b8fe59f00875",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## AIRS Response Check \nValidate the response does not have toxic content, malicious URL's , contextual sensitive data or any hallucinations\n",
+        "height": 540,
+        "width": 420,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1280,
+        -140
+      ],
+      "typeVersion": 1,
+      "id": "dea4417b-957c-4cb3-88ae-7bc8f31bef67",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Input": {
+      "main": [
+        [
+          {
+            "node": "AIRS Prompt Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ToUppercase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Restore Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Block Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AIRS Response Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AIRS Response Check": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AIRS Prompt Check": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama via OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "00d640d5-6452-49a7-850a-6b639e1a0fc5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "67ec321cf69ca0d5d0bed4d0bf0906e0b93d73b921dd0ad4ecc70238407da3dc"
+  },
+  "id": "Bjwc6QGTwcKkXkbQ",
+  "tags": []
+}

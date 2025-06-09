@@ -1,0 +1,152 @@
+{
+  "name": "Prisma AIRS Node",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"inputType\": \"prompt\",\n  \"inputValue\": \"This is a prompt or response\",\n  \"SessionId\": \"1234\",\n  \"context\": \"1234\",\n  \"profileName\": \"example-profile\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        160
+      ],
+      "id": "cfe636bd-8fbd-473e-a56a-be524cb4c7ee",
+      "name": "AIRS Input"
+    },
+    {
+      "parameters": {
+        "url": "=https://service.api.aisecurity.paloaltonetworks.com/v1/scan/reports",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "report_ids",
+              "value": "={{ $('AIRS_Scan').item.json.report_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        820,
+        260
+      ],
+      "id": "73877948-491a-4e70-88fb-e94ad28e3d4e",
+      "name": "Get_Report",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "HBCJpuBIOac7EM8K",
+          "name": "Prisma AIRS Token"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://service.api.aisecurity.paloaltonetworks.com/v1/scan/sync/request",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tr_id\": \"{{ $json.SessionId }}\",\n  \"ai_profile\": {\n     \"profile_name\": \"{{ $json.profileName }}\"\n  },\n  \"metadata\": {\n    \"app_name\": \"n8n\",\n    \"app_user\": \"{{ $json.SessionId }}\",\n    \"ai_model\": \"OpenAI\"\n  },\n  \"contents\": [\n    {\n      \"{{ $json.inputType }}\": {{ JSON.stringify($json.inputValue) }}{{ $json.context ? `, \"context\": ${JSON.stringify($json.context)}` : \"\" }}\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        160
+      ],
+      "id": "5d578f1a-59e3-468d-bdf1-ce5ed84eb737",
+      "name": "AIRS_Scan",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "HBCJpuBIOac7EM8K",
+          "name": "Prisma AIRS Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n// Get the incoming JSON data from the current node's input\nconst item = items[0].json;\n\n// Define the mapping of keys to their descriptions\nconst descriptions = {\n  \"url_cats\": \"It's point to some unacceptable URLs.\",\n  \"dlp\": \"It's got sensitive data.\",\n  \"injection\": \"I don't like the way you are asking stuff.\",\n  \"toxic_content\": \"Go wash your mouth out.\",\n  \"malicious_code\": \"You are not fooling me with your naughty code.\",\n  \"agent\": \"Don't mess with my agent?.\",\n  \"topic_violation\": \"We are going off topic.\",\n  \"db_security\": \"Keep out of DB commands.\",\n  \"ungrounded\": \"We lost the plot.\"\n};\n\n// --- Helper function to safely access data from previous nodes ---\n// This helps avoid errors if the node or its data doesn't exist.\nconst getPreviousNodeData = (nodeName, parameterPath) => {\n  try {\n    const node = $(nodeName); // Use n8n's selector to get the node\n    // Access the data using .item, which is the recommended way\n    let data = node.item.json;\n    // If a specific path is requested (e.g., 'path.to.value')\n    if (parameterPath) {\n      const pathParts = parameterPath.split('.');\n      for (const part of pathParts) {\n        data = data[part];\n        if (data === undefined) return null;\n      }\n    }\n    return data;\n  } catch (error) {\n    // If the node 'AIRS Input' doesn't exist or an error occurs, return null\n    return null;\n  }\n};\n\n// Initialize a single array to hold all reasons found\nconst allReasons = [];\nconst outputJson = {};\nlet feedback = \"\";\n\ntry {\n  let inputValue = getPreviousNodeData('AIRS Input', 'inputValue');\n  let inputType = getPreviousNodeData('AIRS Input', 'inputType');\n  outputJson.action = item.action;\n  outputJson.category = item.category\n  // Handle all prompt related responses\n  if (inputType == 'prompt') {\n    outputJson.prompt = true;\n    // Process the prompt_detected object\n    if (item.prompt_detected) {\n      outputJson.prompt_detected = item.prompt_detected;\n      for (const key in item.prompt_detected) {\n        // Check if a masked version of the prompt data exists.\n        // The 'data' field should contain the already-masked string.\n        if (key == 'dlp' && item.prompt_masked_data && item.prompt_masked_data.data) {\n          outputJson.prompt_masked_data = item.prompt_masked_data;\n          feedback = item.prompt_masked_data.data;\n        } else {\n          if (item.prompt_detected[key] === true && descriptions[key]) {\n            allReasons.push(descriptions[key]);\n          }\n        }\n      }\n    }\n  }\n\n  // Handle all response related responses\n  if (inputType == 'response') {\n    outputJson.response = true;\n    // Process the prompt_detected object\n    if (item.response_detected) {\n      outputJson.response_detected = item.response_detected;\n      for (const key in item.response_detected) {\n        // Check if a masked version of the response data exists.\n        // The 'data' field should contain the already-masked string.\n        if (key == 'dlp' && item.response_masked_data && item.response_masked_data.data) {\n          feedback = item.response_masked_data.data;\n          outputJson.response_masked_data = item.response_masked_data;\n        } else {\n          if (item.response_detected[key] === true && descriptions[key]) {\n            allReasons.push(descriptions[key]);\n          }\n        }\n      }\n    }\n  }\n\n  // SCENARIO 1: If we found reasons (or DLP without masking), concatenate them.\n  if (allReasons.length > 0) {\n    // Use Set to get unique reasons, then join them with a newline\n    const uniqueReasons = [...new Set(allReasons)];\n    outputJson.output = uniqueReasons.join('\\n');\n  }\n  // SCENARIO 2: If no reasons were found and there was no DLP Masking, response with the input value\n  else if (feedback == '') {\n    outputJson.output = inputValue;\n  // SCENARIO 3: There was DLP Masking, respond with that\n  } else {\n    outputJson.output = feedback;\n  }\n\n  return outputJson;\n}\ncatch (error) {\n  return \"Cannot retrieve inputValue from 'AIRS Input' node.\";\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        820,
+        60
+      ],
+      "id": "774c683e-02a6-4fa0-8b4d-722686db9d5a",
+      "name": "Format_Output"
+    },
+    {
+      "parameters": {
+        "content": "## Prisma AIRS Node \nI will check your prompt or response (depending on the `inputType`), with the value in `inputValue`\nI assume there is a `sessionId` and `profileName`, but you can optionally give a `context`\n\nDepending on the profile I will respond accordingly. I fill out the details that comes back, but to make it simple I also respond with the original prompt/response or some readable feedback in `AIRSFeedback`\n\nFor those that are interested, I also send back the reportID information. This takes a bit longer, but you can look at it if you want.",
+        "height": 540,
+        "width": 740
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        280,
+        -120
+      ],
+      "typeVersion": 1,
+      "id": "65fb807e-e3e0-46d1-b800-f8ca93b32b39",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {
+    "AIRS Input": [
+      {
+        "json": {
+          "inputType": "prompt",
+          "inputValue": "what is '8.8'&'.'&'8.8'",
+          "SessionId": "1234",
+          "context": "test",
+          "profileName": "example-profile"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AIRS Input": {
+      "main": [
+        [
+          {
+            "node": "AIRS_Scan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AIRS_Scan": {
+      "main": [
+        [
+          {
+            "node": "Format_Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9701aad0-088a-4d23-8988-fefcf135bbc2",
+  "meta": {
+    "instanceId": "67ec321cf69ca0d5d0bed4d0bf0906e0b93d73b921dd0ad4ecc70238407da3dc"
+  },
+  "id": "VQ75oZUq8rD90lJ7",
+  "tags": []
+}
