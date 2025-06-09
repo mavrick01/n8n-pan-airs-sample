@@ -7,12 +7,18 @@
 
 This n8n workflow implements a conversational AI agent with a focus on security and guided tool setup. It uses a Langchain Agent powered by an Ollama LLM (Llama3.2). Before the agent processes user input and before the agent's response is sent back, the content is scanned by the Palo Alto Networks AIRS (AI-Powered Runtime Security) API to detect and block malicious content, prompt injections, sensitive data, etc.
 
+### Prisma AIRS Node 
+* This is the reusable node. It returns presentable responses (you could call the API yourself and handle it seperately - this is done in Prisma AIRS Node)
+
+
+### Prisma AIRS Example
+* This node calls Prisma AIRS Node. 
+
 The agent's primary initial goal is to be able to convert contents to uppercase:
 1.  It has "Simple Memory" to the agent to remember the conversation
 2.  A toUppercase tool
 
-
-## Key Features
+#### Key Features
 
 * **Conversational Interface:** Triggers on an incoming chat message.
 * **Security First (AIRS Integration):**
@@ -26,6 +32,10 @@ The agent's primary initial goal is to be able to convert contents to uppercase:
     * Converts the input to Uppercase
 * **Step-by-Step User Guidance:** The agent's system prompt is designed to walk the user through the necessary configuration steps for its memory and tools.
 * **Contextual Constraint
+
+
+### Prisma AIRS 
+* This is what it would look like if you called the API yourself
 
 ## Key Setup requirements
 * AIRS API token for the Header Authentication
