@@ -1,7 +1,7 @@
 # n8n Workflow: AIRS Agent
 
 **Version:** 3.0 (based on the provided JSON)
-**Name in n8n:** Prisma AIRS Demo
+**Name in n8n:** Prisma AIRS
 
 ## Overview
 
