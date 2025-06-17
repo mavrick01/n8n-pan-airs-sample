@@ -28,7 +28,7 @@ This is what it looks like with Security surrounding the Agent:
 
 ## Key Features
 
-* **Conversational Interface:** Triggers on an incoming chat message.
+* **Conversational Interface:** Triggers on an incoming chat message. There is also a web hook for an API call.
 * **Security First (AIRS Integration):**
     * **Prompt Scanning:** User input is first sent to the a Node that calls the Palo Alto AIRS API. If deemed malicious or problematic, the workflow stops and informs the user in readable format.
     * **Response Scanning:** The agent's generated response is sent to the same node . If the response is flagged, a block message is sent instead of the agent's original response.
@@ -44,15 +44,27 @@ This is what it looks like with Security surrounding the Agent:
 
 # Advanced Example
 
-For more Advanced Users, the workflow is split from the Example. It also allows combination of events (e.g. DLP + URL Filtering + Prompt Injection)
-### Prisma AIRS Node 
-* This is the reusable node. It returns presentable responses (you could call the API yourself and handle it seperately - this is done in Prisma AIRS Node)
-![n8n layout of Prisma AIRS Node](images/Prisma%20AIRS%20Node.png)
+For more Advanced Users, the workflow is split from the Example. It also allows combination of events (e.g. DLP + URL Filtering + Prompt Injection) 
 
 ### Prisma AIRS Example
-* This node calls Prisma AIRS Node. 
+This node has 2 parts, 
+* The standard workflow with the AI Agent sandwitched by the Prisma AIRS functionality (blue/purple blocks).
+* The node that can be called repeatibly (yellow block). This will call the Prisma AIRS API and dones some conversion to plain english responses. It also will stack responses if there are multiple triggers.
+
 ![n8n layout of Prisma AIRS Example](images/Prisma%20AIRS%20Example.png)
 
-## Design considerations
-* The Prisma_AIRS_Node must also be included as it is called by PRISM_AIRS_Example (In Prisma_AIRS node it is a standalone node)
+### Prisma AIRS MCP Server
+
+This is a N8N replica of the Python SDK MCP Server.
+
+![MCP Server Example](images/Prisma%20AIRS%20MCP%20Server.png)
+You attach to the MCP Server which is built off your N8N Server (e.g. as my n8n server is on my laptop I connect to the localhost: http://localhost:5678/mcp/airs-mcp/sse)
+
+The Server (the yellow block) advertises is functions to the client (in the green block) and you can run scans and get results and reports. 
+
+In this example I have a test agent (green block) that you can use to test the results. 
+
+I have seperated the function of the server from the execution via workflow call (blue block)
+
+NOTE: Currently the Async Scan is not perfect (having some typecasting issues)
 

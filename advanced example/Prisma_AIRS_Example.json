@@ -9,10 +9,10 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        -40,
-        100
+        -200,
+        420
       ],
-      "id": "701eeb8b-d411-4025-afea-445604511c8c",
+      "id": "53676940-0fb8-43d1-9897-d831aee7d0d6",
       "name": "Chat Input",
       "webhookId": "eeebd659-401b-45ea-9234-97b6b2042463"
     },
@@ -25,10 +25,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        912,
-        0
+        760,
+        320
       ],
-      "id": "7eb77f96-5e0d-44b1-8620-066d7a434fe8",
+      "id": "3c623be0-e936-4163-8b6b-63a32521cab7",
       "name": "AI Agent"
     },
     {
@@ -36,10 +36,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        1000,
-        220
+        840,
+        540
       ],
-      "id": "345c38a1-2e44-4fe0-9a93-7b7d5253ff8d",
+      "id": "37fe2e98-998e-48d4-bd52-08114ae3037c",
       "name": "Simple Memory"
     },
     {
@@ -49,10 +49,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolCode",
       "typeVersion": 1.2,
       "position": [
-        1120,
-        220
+        960,
+        540
       ],
-      "id": "5a50a085-6bc5-41bc-bfa3-354d867bd2d4",
+      "id": "24788ff1-7dba-4ac6-8320-cd35c25dbf95",
       "name": "ToUppercase"
     },
     {
@@ -93,10 +93,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        400,
-        100
+        240,
+        420
       ],
-      "id": "590b20c6-9bbf-4cf1-8373-6e37c41535fa",
+      "id": "906dc61a-c1a1-4dfe-ba8b-d84392f8bf13",
       "name": "If"
     },
     {
@@ -128,19 +128,19 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        620,
-        0
+        460,
+        320
       ],
-      "id": "d7d4f32b-132b-40ea-9d8a-196093842b98",
+      "id": "6ba97b1c-d29e-4c32-8588-63d4dc355a34",
       "name": "Restore Prompt"
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "VQ75oZUq8rD90lJ7",
+          "value": "px27SijkX0R9Bcfl",
           "mode": "list",
-          "cachedResultName": "Prisma AIRS Node"
+          "cachedResultName": "Prisma AIRS Example"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -207,10 +207,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1320,
-        0
+        1160,
+        320
       ],
-      "id": "9ee600dd-439e-42d6-89a8-c44f1987ff1d",
+      "id": "42c7fd6b-0219-43c3-af35-cac8ad7610db",
       "name": "AIRS Response Check"
     },
     {
@@ -230,19 +230,19 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1540,
-        0
+        1380,
+        320
       ],
-      "id": "5b3d08aa-b6d6-47c0-be33-e7ae7899416b",
+      "id": "bdb7ad6f-7ca3-4985-927e-04a6c8cfed7d",
       "name": "Format Output"
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "VQ75oZUq8rD90lJ7",
+          "value": "px27SijkX0R9Bcfl",
           "mode": "list",
-          "cachedResultName": "Prisma AIRS Node"
+          "cachedResultName": "Prisma AIRS Example"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -308,10 +308,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        180,
-        100
+        20,
+        420
       ],
-      "id": "48fa5c6c-d039-4e5e-9d2d-0f20b1c5c369",
+      "id": "66d7b986-711d-4c0e-8848-8ff1981b0e52",
       "name": "AIRS Prompt Check"
     },
     {
@@ -331,36 +331,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        620,
-        200
+        460,
+        520
       ],
-      "id": "b092c791-8a0b-49ed-87b7-4e87a2317e5f",
+      "id": "e97d76d3-838e-4be2-b71b-1af6e6fa4049",
       "name": "Return Block Message"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "llama3.2:latest",
-          "mode": "list",
-          "cachedResultName": "llama3.2:latest"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        860,
-        400
-      ],
-      "id": "651c839e-43a2-46b7-9c9c-9cef7acc3961",
-      "name": "Ollama via OpenAI",
-      "credentials": {
-        "openAiApi": {
-          "id": "EuQCO06tqNpsckIp",
-          "name": "Ollama via OpenAI"
-        }
-      }
     },
     {
       "parameters": {
@@ -371,11 +346,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        160,
-        -140
+        0,
+        180
       ],
       "typeVersion": 1,
-      "id": "a91db074-c7bb-408c-bbcf-b8fe59f00875",
+      "id": "28f6ac07-e706-41cb-a168-41be26932200",
       "name": "Sticky Note1"
     },
     {
@@ -387,32 +362,12 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1280,
-        -140
+        1120,
+        180
       ],
       "typeVersion": 1,
-      "id": "dea4417b-957c-4cb3-88ae-7bc8f31bef67",
+      "id": "d5aa0d7a-a40d-4fd7-9283-c05f7c7f878f",
       "name": "Sticky Note2"
-    },
-    {
-      "parameters": {
-        "model": "anthropic.claude-3-5-sonnet-20240620-v1:0",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatAwsBedrock",
-      "typeVersion": 1,
-      "position": [
-        860,
-        220
-      ],
-      "id": "f3ae8322-639c-4553-bfa6-b65164086149",
-      "name": "AWS Bedrock Chat Model",
-      "credentials": {
-        "aws": {
-          "id": "Kw5yTCboFszhCgYE",
-          "name": "AWS account"
-        }
-      }
     },
     {
       "parameters": {
@@ -422,15 +377,120 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        160,
-        -320
+        0,
+        0
       ],
       "typeVersion": 1,
-      "id": "d5ea4bc2-652f-47a6-b27f-9821fc8b486b",
+      "id": "eab1392c-c77b-40a3-80df-7936cd286819",
       "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"inputType\": \"prompt\",\n  \"inputValue\": \"This is a prompt or response\",\n  \"SessionId\": \"1234\",\n  \"context\": \"1234\",\n  \"profileName\": \"example-profile\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        540,
+        1020
+      ],
+      "id": "20683928-c80a-44d1-99cd-00e2479047f3",
+      "name": "AIRS Input"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://service.api.aisecurity.paloaltonetworks.com/v1/scan/sync/request",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"tr_id\": \"{{ $json.SessionId }}\",\n  \"ai_profile\": {\n     \"profile_name\": \"{{ $json.profileName }}\"\n  },\n  \"metadata\": {\n    \"app_name\": \"n8n\",\n    \"app_user\": \"{{ $json.SessionId }}\",\n    \"ai_model\": \"OpenAI\"\n  },\n  \"contents\": [\n    {\n      \"{{ $json.inputType }}\": {{ JSON.stringify($json.inputValue) }}{{ $json.context ? `, \"context\": ${JSON.stringify($json.context)}` : \"\" }}\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        780,
+        1020
+      ],
+      "id": "a46db631-e832-40d5-a4cb-fc1418ee8049",
+      "name": "AIRS_Scan",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "IO4bABy7VOvW8EYm",
+          "name": "PRISMA AIRS API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n// Get the incoming JSON data from the current node's input\nconst item = items[0].json;\n\n// Define the mapping of keys to their descriptions\nconst descriptions = {\n  \"url_cats\": \"It's point to some unacceptable URLs.\",\n  \"dlp\": \"It's got sensitive data.\",\n  \"injection\": \"I don't like the way you are asking stuff.\",\n  \"toxic_content\": \"Go wash your mouth out.\",\n  \"malicious_code\": \"You are not fooling me with your naughty code.\",\n  \"agent\": \"Don't mess with my agent?.\",\n  \"topic_violation\": \"We are going off topic.\",\n  \"db_security\": \"Keep out of DB commands.\",\n  \"ungrounded\": \"We lost the plot.\"\n};\n\n// --- Helper function to safely access data from previous nodes ---\n// This helps avoid errors if the node or its data doesn't exist.\nconst getPreviousNodeData = (nodeName, parameterPath) => {\n  try {\n    const node = $(nodeName); // Use n8n's selector to get the node\n    // Access the data using .item, which is the recommended way\n    let data = node.item.json;\n    // If a specific path is requested (e.g., 'path.to.value')\n    if (parameterPath) {\n      const pathParts = parameterPath.split('.');\n      for (const part of pathParts) {\n        data = data[part];\n        if (data === undefined) return null;\n      }\n    }\n    return data;\n  } catch (error) {\n    // If the node 'AIRS Input' doesn't exist or an error occurs, return null\n    return null;\n  }\n};\n\n// Initialize a single array to hold all reasons found\nconst allReasons = [];\nconst outputJson = {};\nlet feedback = \"\";\n\ntry {\n  let inputValue = getPreviousNodeData('AIRS Input', 'inputValue');\n  let inputType = getPreviousNodeData('AIRS Input', 'inputType');\n  outputJson.action = item.action;\n  outputJson.category = item.category\n  // Handle all prompt related responses\n  if (inputType == 'prompt') {\n    outputJson.prompt = true;\n    // Process the prompt_detected object\n    if (item.prompt_detected) {\n      outputJson.prompt_detected = item.prompt_detected;\n      for (const key in item.prompt_detected) {\n        // Check if a masked version of the prompt data exists.\n        // The 'data' field should contain the already-masked string.\n        if (key == 'dlp' && item.prompt_masked_data && item.prompt_masked_data.data) {\n          outputJson.prompt_masked_data = item.prompt_masked_data;\n          feedback = item.prompt_masked_data.data;\n        } else {\n          if (item.prompt_detected[key] === true && descriptions[key]) {\n            allReasons.push(descriptions[key]);\n          }\n        }\n      }\n    }\n  }\n\n  // Handle all response related responses\n  if (inputType == 'response') {\n    outputJson.response = true;\n    // Process the prompt_detected object\n    if (item.response_detected) {\n      outputJson.response_detected = item.response_detected;\n      for (const key in item.response_detected) {\n        // Check if a masked version of the response data exists.\n        // The 'data' field should contain the already-masked string.\n        if (key == 'dlp' && item.response_masked_data && item.response_masked_data.data) {\n          feedback = item.response_masked_data.data;\n          outputJson.response_masked_data = item.response_masked_data;\n        } else {\n          if (item.response_detected[key] === true && descriptions[key]) {\n            allReasons.push(descriptions[key]);\n          }\n        }\n      }\n    }\n  }\n\n  // SCENARIO 1: If we found reasons (or DLP without masking), concatenate them.\n  if (allReasons.length > 0) {\n    // Use Set to get unique reasons, then join them with a newline\n    const uniqueReasons = [...new Set(allReasons)];\n    outputJson.output = uniqueReasons.join('\\n');\n  }\n  // SCENARIO 2: If no reasons were found and there was no DLP Masking, response with the input value\n  else if (feedback == '') {\n    outputJson.output = inputValue;\n  // SCENARIO 3: There was DLP Masking, respond with that\n  } else {\n    outputJson.output = feedback;\n  }\n\n  return outputJson;\n}\ncatch (error) {\n  return \"Cannot retrieve inputValue from 'AIRS Input' node.\";\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        1020
+      ],
+      "id": "1a2511ae-3a5e-442d-990b-fcec7904c8c9",
+      "name": "Format_Output"
+    },
+    {
+      "parameters": {
+        "content": "## Prisma AIRS Node - Sync Scan\nThis node will check your prompt or response (depending on the `inputType`), with the value in `inputValue`\nIt requires is a `sessionId` and `profileName`, any you can optionally give a `context`\n\nDepending on the profile it will respond accordingly.\n\nTo make it simple the node also responds with the original prompt/response or some readable feedback in `output`\n",
+        "height": 400,
+        "width": 740
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        480,
+        800
+      ],
+      "typeVersion": 1,
+      "id": "731d0ebc-e421-449a-8c00-afe639396f0c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "projectId": {
+          "__rl": true,
+          "value": "mgollop-d974",
+          "mode": "list",
+          "cachedResultName": "ai-sandbox-mgollop"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleVertex",
+      "typeVersion": 1,
+      "position": [
+        700,
+        540
+      ],
+      "id": "31b7b30a-5369-4b02-9915-e34344f4f716",
+      "name": "Google Vertex Chat Model",
+      "credentials": {
+        "googleApi": {
+          "id": "G3XOhyooXId4bmsp",
+          "name": "Google Service Account account"
+        }
+      }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "AIRS Input": [
+      {
+        "json": {
+          "inputType": "prompt",
+          "inputValue": "what is '8.8'&'.'&'8.8'",
+          "SessionId": "1234",
+          "context": "test",
+          "profileName": "example-profile"
+        }
+      }
+    ]
+  },
   "connections": {
     "Chat Input": {
       "main": [
@@ -527,12 +587,29 @@
         ]
       ]
     },
-    "Ollama via OpenAI": {
-      "ai_languageModel": [
-        []
+    "AIRS Input": {
+      "main": [
+        [
+          {
+            "node": "AIRS_Scan",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
-    "AWS Bedrock Chat Model": {
+    "AIRS_Scan": {
+      "main": [
+        [
+          {
+            "node": "Format_Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Vertex Chat Model": {
       "ai_languageModel": [
         [
           {
@@ -548,11 +625,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "a2790842-20fe-49e5-a5e9-4ae9d6392456",
+  "versionId": "a905f349-9a38-4ab7-b6c7-86be1e26eb4e",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "67ec321cf69ca0d5d0bed4d0bf0906e0b93d73b921dd0ad4ecc70238407da3dc"
+    "instanceId": "553173494ba57eb5adff51476e6353ae6dfe7d9bb7578bac7e0400494a4ec1f0"
   },
-  "id": "Bjwc6QGTwcKkXkbQ",
+  "id": "px27SijkX0R9Bcfl",
   "tags": []
 }
