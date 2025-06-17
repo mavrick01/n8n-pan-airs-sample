@@ -94,11 +94,11 @@
           "conditions": [
             {
               "id": "714f0ac1-1d74-4a5d-b9f8-f40eeced89a4",
-              "leftValue": "={{ $json.category }}",
-              "rightValue": "malicious",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "=allow",
               "operator": {
                 "type": "string",
-                "operation": "notEquals"
+                "operation": "equals"
               }
             },
             {
@@ -948,7 +948,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "222af485-1607-42fe-b9fe-3e417fb50581",
+  "versionId": "dc082474-d686-4a7c-97c3-c53f64e91f70",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "553173494ba57eb5adff51476e6353ae6dfe7d9bb7578bac7e0400494a4ec1f0"
