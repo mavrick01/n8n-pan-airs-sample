@@ -1,6 +1,6 @@
 # n8n Workflow: AIRS Agent
 
-**Version:** 2.0 (based on the provided JSON)
+**Version:** 3.0 (based on the provided JSON)
 **Name in n8n:** Prisma AIRS Demo
 
 ## Overview
@@ -58,7 +58,7 @@ This node has 2 parts,
 This is a N8N replica of the Python SDK MCP Server.
 
 ![MCP Server Example](images/Prisma%20AIRS%20MCP%20Server.png)
-You attach to the MCP Server which is built off your N8N Server (e.g. as my n8n server is on my laptop I connect to the localhost: http://localhost:5678/mcp/airs-mcp/sse)
+You attach to the MCP Server which is built off your N8N Server (e.g. as my n8n server is on my laptop I connect to the localhost: http://localhost:5678/mcp/airs-mcp/sse). For safety I am using a bearer token.
 
 The Server (the yellow block) advertises is functions to the client (in the green block) and you can run scans and get results and reports. 
 
