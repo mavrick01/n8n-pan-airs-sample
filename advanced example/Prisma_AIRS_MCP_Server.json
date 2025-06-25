@@ -9,16 +9,16 @@
       "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
       "typeVersion": 1,
       "position": [
-        -140,
-        20
+        1080,
+        280
       ],
-      "id": "3be8bbb6-eee2-4b83-b76c-ca9d76fce988",
+      "id": "1f7de221-0c31-41dd-86d1-69ec665dc8e3",
       "name": "MCP Server Trigger",
       "webhookId": "82295461-4e73-4fc5-b23a-7f45ef9e801d",
       "credentials": {
         "httpBearerAuth": {
-          "id": "Uz76yT6IXqOO8dR5",
-          "name": "MCP Server Token"
+          "id": "ezcni0z2Nbzblrig",
+          "name": "LocalAuth Token"
         }
       }
     },
@@ -124,20 +124,20 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        860,
-        300
+        2080,
+        560
       ],
-      "id": "99dcaffc-c300-43be-bcb5-bf6cc8530533",
+      "id": "57990461-7c92-410a-88d2-30e58030c3ce",
       "name": "Switch"
     },
     {
       "parameters": {
-        "description": "Submit a single Prompt and/or Model-Response (Scan Content) to be scanned synchronously.\n\n    This is a blocking operation - the function will not return until the scan is complete\n    or a timeout, (e.g. as configured in the AI Profile), is breached.\n\n    Returns a complete Scan Response, notably the category (benign/malicious) and action (allow/block).\n\n    See also: https://pan.dev/ai-runtime-security/api/scan-sync-request/",
+        "description": "Submit a single Prompt and/or Model-Response (Scan Content) to be scanned synchronously.\n\n\nThis is a blocking operation - the function will not return until the scan is complete or a timeout, (e.g. as configured in the AI Profile), is breached.\n\nThe JSON object is based on the following rules and examples.\n\nRules:\n1. The object MUST contain at least one of the following keys: 'prompt' or 'response'.\n2. The object CAN contain both keys.\n3. The values for the keys must be non-empty strings.\n4. Do not include any key if it does not have a value.\n\nValid Examples:\n- { \"prompt\": \"some text\" }\n- { \"response\": \"another piece of text\" }\n- { \"prompt\": \"first part\", \"response\": \"second part\" }\n\nNow, generate a JSON object that follows these rules.\n\nReturns a complete Scan Response, notably the category (benign/malicious),  action (allow/block) and share the scan_id and report_id to be able to retrieve more detailed information.\n\n    See also: https://pan.dev/ai-runtime-security/api/scan-sync-request/",
         "workflowId": {
           "__rl": true,
-          "value": "OnXBKvbVRQnsc9Ll",
+          "value": "DsC2uU9onB7o5OWj",
           "mode": "list",
-          "cachedResultName": "Prisma AIRS MCP Server"
+          "cachedResultName": "Prisma AIRS MCP Node"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -175,69 +175,20 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        -200,
-        240
+        1020,
+        500
       ],
-      "id": "07dffb2e-9278-4740-83e1-8f9a810733b8",
+      "id": "783b6a56-fb48-413a-929b-db6260c25c20",
       "name": "PAN Sync Scan"
-    },
-    {
-      "parameters": {
-        "description": "Submit multiple Scan Contents containing prompts/model-responses for asynchronous (batch) scanning.\n\n    Automatically splits requests into batches of 5, which are submitted concurrently.\n\n    Returns a list of AsyncScanResponse objects, each includes a scan_id and report_id,\n    which can be used to retrieve scan results after the asynchronous scans are complete.\n\n    See also: https://pan.dev/ai-runtime-security/api/scan-async-request/",
-        "workflowId": {
-          "__rl": true,
-          "value": "=OnXBKvbVRQnsc9Ll",
-          "mode": "id"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "function_name": "=pan_batch_scan",
-            "payload": "={\n  \"list\": \"{{ $fromAI(\"list\", \"The list of prompts or responses to scan in the format { prompt: string, response: string }\", \"json\") }}\"\n}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "function_name",
-              "displayName": "function_name",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "payload",
-              "displayName": "payload",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "object",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
-      "position": [
-        -60,
-        240
-      ],
-      "id": "30de8d67-95ce-4215-a9ad-26f3d0e02526",
-      "name": "PAN Batch Scan"
     },
     {
       "parameters": {
         "description": "Retrieve Scan Results with a list of Scan IDs.\n\n    A Scan ID is a UUID string.\n\n    See also: https://pan.dev/ai-runtime-security/api/get-scan-results-by-scan-i-ds/",
         "workflowId": {
           "__rl": true,
-          "value": "OnXBKvbVRQnsc9Ll",
-          "mode": "id"
+          "value": "DsC2uU9onB7o5OWj",
+          "mode": "list",
+          "cachedResultName": "Prisma AIRS MCP Node"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -275,10 +226,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        80,
-        240
+        1300,
+        500
       ],
-      "id": "72f3a977-9992-4af2-9f65-f09dd91438bb",
+      "id": "f7786c0e-7e40-4ecb-b823-525167e59179",
       "name": "PAN Get Scan Results"
     },
     {
@@ -288,10 +239,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -60,
-        480
+        1160,
+        740
       ],
-      "id": "2f9f039c-d01c-42aa-bad7-3770331692ea",
+      "id": "9bb2fc3b-770c-45bb-80c1-f926721ad552",
       "name": "AI Agent"
     },
     {
@@ -301,31 +252,30 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        -220,
-        480
+        1000,
+        740
       ],
-      "id": "34d444da-85c4-4cbd-8aee-cbef8b351529",
+      "id": "26e3936a-a60c-419b-be49-5a9eda2e06e8",
       "name": "When chat message received",
       "webhookId": "591a7966-0f27-45d6-a4bd-c68c9fdb9adc"
     },
     {
       "parameters": {
-        "sseEndpoint": "http://localhost:5678/mcp/airs-mcp/sse",
-        "authentication": "bearerAuth",
-        "include": "selected"
+        "sseEndpoint": "http://127.0.0.1:5678/mcp/airs-mcp/sse",
+        "authentication": "bearerAuth"
       },
       "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        180,
-        660
+        1400,
+        920
       ],
-      "id": "556c1db3-91cf-4aea-a6c7-3356a859ccce",
+      "id": "0a5a15cb-e533-4774-9df5-2bebd1ebb5d9",
       "name": "MCP Client",
       "credentials": {
         "httpBearerAuth": {
-          "id": "Uz76yT6IXqOO8dR5",
-          "name": "MCP Server Token"
+          "id": "ezcni0z2Nbzblrig",
+          "name": "LocalAuth Token"
         }
       }
     },
@@ -334,8 +284,9 @@
         "description": "Retrieve Scan Reports with a list of Scan Report IDs.\n\n    A Scan Report ID is a Scan ID (UUID) prefixed with \"R\".\n\n    See also: https://pan.dev/ai-runtime-security/api/get-scan-results-by-scan-i-ds/",
         "workflowId": {
           "__rl": true,
-          "mode": "id",
-          "value": "OnXBKvbVRQnsc9Ll"
+          "value": "DsC2uU9onB7o5OWj",
+          "mode": "list",
+          "cachedResultName": "Prisma AIRS MCP Node"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -373,25 +324,25 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        220,
-        240
+        1440,
+        500
       ],
-      "id": "f10720d6-3049-4192-83ac-1fbb7a7a08db",
+      "id": "fb5cc98d-0242-454a-b2b0-9f25f97bccd3",
       "name": "PAN Get Scan Reports"
     },
     {
       "parameters": {
-        "content": "## Prisma AIRS MCSP Server\nThis is a MCP Service that runs the different  Prisma AIRS API Calls",
+        "content": "## Prisma AIRS MCP Server\nThis is a MCP Service that runs the different  Prisma AIRS API Calls",
         "height": 440,
         "width": 680
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -340,
-        -60
+        880,
+        200
       ],
       "typeVersion": 1,
-      "id": "8e0b1a34-dd16-47a8-9bd1-4b74786e3211",
+      "id": "9a332812-6c92-4f63-8ca5-72f03591c8b2",
       "name": "Sticky Note"
     },
     {
@@ -403,11 +354,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -340,
-        400
+        880,
+        660
       ],
       "typeVersion": 1,
-      "id": "b4a2ffc9-4f3e-4213-9b3b-e93335771c8c",
+      "id": "825dae00-3e05-4e5d-9279-5b5b670a6863",
       "name": "Sticky Note1"
     },
     {
@@ -427,10 +378,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        420,
-        320
+        1640,
+        580
       ],
-      "id": "11fb9140-884f-4bca-95e4-688b329093fd",
+      "id": "5a638621-d212-4964-add9-7589b5f7e385",
       "name": "PAN MCP Functions"
     },
     {
@@ -463,10 +414,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        640,
-        320
+        1860,
+        580
       ],
-      "id": "fd1a8173-8bb8-4b3f-ae9a-086346a5856f",
+      "id": "d313b163-e7f3-48b5-aa42-a5ebd9d9be3b",
       "name": "Prisma AIRS Config"
     },
     {
@@ -478,11 +429,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        400,
-        -60
+        1620,
+        200
       ],
       "typeVersion": 1,
-      "id": "76bef49f-cde5-40c1-8fca-28e087349210",
+      "id": "806c3cd7-5352-4871-9315-9202e41ed061",
       "name": "Sticky Note2"
     },
     {
@@ -499,15 +450,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1080,
-        20
+        2300,
+        280
       ],
-      "id": "b9b20228-eb6a-429a-bceb-145979fec11a",
+      "id": "a987e71c-75f5-40b8-a745-2253c4406936",
       "name": "AIRS Sync Scan",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "IO4bABy7VOvW8EYm",
-          "name": "PRISMA AIRS API"
+          "id": "MAGzjmb5D8Qyltnx",
+          "name": "Prisma AIRS Token"
         }
       }
     },
@@ -525,17 +476,28 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1080,
-        220
+        2300,
+        480
       ],
-      "id": "a9fddf41-d517-4a9c-b688-e4e45dd28b59",
+      "id": "fa9d0e88-d16a-42d1-882e-2f458b846169",
       "name": "AIRS Async Scan",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "IO4bABy7VOvW8EYm",
-          "name": "PRISMA AIRS API"
+          "id": "MAGzjmb5D8Qyltnx",
+          "name": "Prisma AIRS Token"
         }
       }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1280,
+        920
+      ],
+      "id": "f8d21aac-8b2b-4395-997d-06fde77cda6b",
+      "name": "Simple Memory"
     },
     {
       "parameters": {
@@ -556,15 +518,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1080,
-        420
+        2300,
+        680
       ],
-      "id": "d73cfcb7-9e40-4f29-97fe-4e45b56c627c",
-      "name": "AIRS Async Scan1",
+      "id": "d348bb76-0e79-4601-a233-dc4a0988af1c",
+      "name": "Get Scan Results",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "IO4bABy7VOvW8EYm",
-          "name": "PRISMA AIRS API"
+          "id": "MAGzjmb5D8Qyltnx",
+          "name": "Prisma AIRS Token"
         }
       }
     },
@@ -587,17 +549,67 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1080,
-        620
+        2300,
+        880
       ],
-      "id": "61d083d0-92bc-4bd4-af45-7731c2ae9dde",
-      "name": "AIRS Async Scan2",
+      "id": "ee506168-3743-4b0e-8fb8-e29f438f8d89",
+      "name": "Get Scan Report",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "IO4bABy7VOvW8EYm",
-          "name": "PRISMA AIRS API"
+          "id": "MAGzjmb5D8Qyltnx",
+          "name": "Prisma AIRS Token"
         }
       }
+    },
+    {
+      "parameters": {
+        "description": "Submit multiple Scan Contents containing lists of prompts or responses for  asynchronous (batch) scanning. \nThe list must be in the format of a valid JSON objects based on the following rules and examples.\n\nRules:\n1. Each list must contain an object\n2. The object MUST contain at least one of the following keys: 'prompt' or 'response'.\n3. The object CAN contain both keys.\n4. The values for the keys must be non-empty strings.\n5. Do not include any key if it does not have a value.\n\nValid Examples:\n- [{ \"prompt\": \"some text\" }]\n- [{ \"response\": \"another piece of text\" }]\n- [{ \"prompt\": \"first part\", \"response\": \"second part\" }]\n- [{ \"prompt\": \"first part\"}, {\"response\": \"second part\" }]\n\nNow, generate a JSON object that follows these rules.\n\nAutomatically splits requests into batches of 5, which are submitted concurrently.\n\n    Returns a list of AsyncScanResponse objects, each includes a scan_id and report_id,\n    which can be used to retrieve scan results after the asynchronous scans are complete.\n\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "=DsC2uU9onB7o5OWj",
+          "mode": "id"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "function_name": "=pan_batch_scan",
+            "payload": "={{ {\"list\" :\n  $fromAI(\"list\", \"Generate a list of JSON objects. Each JSON object must contain AT LEAST ONE of the following string keys: 'prompt', 'response'. It can contain both, but only include keys that have a value.\", \"json\") }\n}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "function_name",
+              "displayName": "function_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "payload",
+              "displayName": "payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1160,
+        500
+      ],
+      "id": "cdf975cc-e4e8-4ffb-916a-8d6d1157b98a",
+      "name": "PAN Batch Scan"
     },
     {
       "parameters": {
@@ -607,19 +619,20 @@
           "mode": "list",
           "cachedResultName": "ai-sandbox-mgollop"
         },
+        "modelName": "gemini-2.5-flash",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleVertex",
       "typeVersion": 1,
       "position": [
-        -60,
-        660
+        1040,
+        940
       ],
-      "id": "aebb6156-0673-4465-a66c-e0538b410db6",
+      "id": "2cf6b499-4b61-46eb-bc32-09f54aedb20c",
       "name": "Google Vertex Chat Model",
       "credentials": {
         "googleApi": {
-          "id": "G3XOhyooXId4bmsp",
+          "id": "41opJqqkwwaEDeZk",
           "name": "Google Service Account account"
         }
       }
@@ -665,14 +678,14 @@
         ],
         [
           {
-            "node": "AIRS Async Scan1",
+            "node": "Get Scan Results",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "AIRS Async Scan2",
+            "node": "Get Scan Report",
             "type": "main",
             "index": 0
           }
@@ -680,17 +693,6 @@
       ]
     },
     "PAN Sync Scan": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Server Trigger",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "PAN Batch Scan": {
       "ai_tool": [
         [
           {
@@ -767,6 +769,28 @@
         ]
       ]
     },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PAN Batch Scan": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Google Vertex Chat Model": {
       "ai_languageModel": [
         [
@@ -783,11 +807,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "bb1ea734-c76c-4ad7-903d-ccac6071f02b",
+  "versionId": "6b2977d3-5cd4-4f6b-b29f-d61772734f17",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "553173494ba57eb5adff51476e6353ae6dfe7d9bb7578bac7e0400494a4ec1f0"
+    "instanceId": "67ec321cf69ca0d5d0bed4d0bf0906e0b93d73b921dd0ad4ecc70238407da3dc"
   },
-  "id": "OnXBKvbVRQnsc9Ll",
+  "id": "DsC2uU9onB7o5OWj",
   "tags": []
 }

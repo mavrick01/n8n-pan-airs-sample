@@ -1,6 +1,6 @@
 # n8n Workflow: AIRS Agent
 
-**Version:** 3.0 (based on the provided JSON)
+**Version:** 3.1 
 **Name in n8n:** Prisma AIRS
 
 ## Overview
@@ -15,14 +15,14 @@ We start with a basic AI Agent whose primary initial goal is to be able to conve
 1.  It has "Simple Memory" to the agent to remember the conversation
 2.  A `toUppercase` tool
 
-This is what it looks like :
+Here is the layout of the basic agent:
 
 ![Basic Agent](images/Basic%20Agent.png)
 
 To add security we add the AI Agent with Prisma AIRS. Protecting both the input and the output of the agent (createing a sandwitch effect).
 
 
-This is what it looks like with Security surrounding the Agent:
+Here is the layout with Security surrounding the Agent:
 
 ![n8n layout of Prisma AIRS standalone example](images/Prisma%20AIRS.png)
 
@@ -49,7 +49,8 @@ For more Advanced Users, the workflow is split from the Example. It also allows 
 ### Prisma AIRS Example
 This node has 2 parts, 
 * The standard workflow with the AI Agent sandwitched by the Prisma AIRS functionality (blue/purple blocks).
-* The node that can be called repeatibly (yellow block). This will call the Prisma AIRS API and dones some conversion to plain english responses. It also will stack responses if there are multiple triggers.
+* The node that can be called repeatibly (yellow block - confirm you are referencing this in your standard block). This will call the Prisma AIRS API and replaces the json responses to plain english responses. It also will stack responses if there are multiple triggers.
+* If you enable masking, it will still return the response with the masked fields.
 
 ![n8n layout of Prisma AIRS Example](images/Prisma%20AIRS%20Example.png)
 
@@ -59,13 +60,12 @@ This is a N8N replica of the Python SDK MCP Server.
 
 ![MCP Server Example](images/Prisma%20AIRS%20MCP%20Server.png)
 
-You attach to the MCP Server which is built off your N8N Server (e.g. as my n8n server is on my laptop I connect to the localhost: http://localhost:5678/mcp/airs-mcp/sse). For safety I am using a bearer token.
+You attach to the MCP Server which is built off your n8n Server (e.g. as my n8n server is on my laptop I connect to the localhost: http://localhost:5678/mcp/airs-mcp/sse). For safety I am using a bearer token.
 
 The Server (the yellow block) advertises is functions to the client (in the green block) and you can run scans and get results and reports. 
 
-In this example I have a test agent (green block) that you can use to test the results. 
+In this example I have a test agent (green block) which can test the results. 
 
 I have seperated the function of the server from the execution via workflow call (blue block)
 
-NOTE: Currently the Async Scan is not perfect (having some typecasting issues)
 
