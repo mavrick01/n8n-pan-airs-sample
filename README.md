@@ -1,19 +1,27 @@
 # n8n Workflow: AIRS Agent
 
-**Version:** 3.1 
+**Version:** 4.0 
 **Name in n8n:** Prisma AIRS
 
 ## Overview
 
-This n8n workflow implements a conversational AI agent with a focus on security and guided tool setup. It uses a Langchain Agent powered by an Google Vertex AI (but you can change that out). 
+This n8n workflow implements a conversational AI agent with a focus on security and guided tool setup. It uses a Langchain Agent powered by an Azure (but lower down are all the other agents for you to choose your bet option)
 
 Before the agent processes user input and before the agent's response is sent back, the content is scanned by the Palo Alto Networks AIRS (AI-Powered Runtime Security) API to detect and block malicious content, prompt injections, sensitive data, etc.
 
+We use the supported Prisma AIRS node, which makes it a lot easier.
+
 ### Prisma AIRS
 
-We start with a basic AI Agent whose primary initial goal is to be able to convert contents to uppercase:
+We start with a basic AI Agent who has 2 tools attached:
+1.  a tool to convert contents to uppercase:
+2. Connect to DeepWiki via MCP
+
+This tool is make up of the following:
 1.  It has "Simple Memory" to the agent to remember the conversation
 2.  A `toUppercase` tool
+3. A MCP Client Tool to connect to DeepWiki (via a security proxy)
+
 
 Here is the layout of the basic agent:
 
@@ -39,20 +47,8 @@ Here is the layout with Security surrounding the Agent:
 
 
 ## Key Setup requirements
-* AIRS API token for the Header Authentication
-* change the profile in the AIRS request and response field edits from example-profile to your specific profile
-
-# Advanced Example
-
-For more Advanced Users, the workflow is split from the Example. It also allows combination of events (e.g. DLP + URL Filtering + Prompt Injection) 
-
-### Prisma AIRS Example
-This node has 2 parts, 
-* The standard workflow with the AI Agent sandwitched by the Prisma AIRS functionality (blue/purple blocks).
-* The node that can be called repeatibly (yellow block - confirm you are referencing this in your standard block). This will call the Prisma AIRS API and replaces the json responses to plain english responses. It also will stack responses if there are multiple triggers.
-* If you enable masking, it will still return the response with the masked fields.
-
-![n8n layout of Prisma AIRS Example](images/Prisma%20AIRS%20Example.png)
+* AIRS API token and default profile in the Prima AIRS Node Authentication
+* change the profile in the AIRS request and response to your specific profile's 
 
 ### Prisma AIRS MCP Server
 
@@ -68,4 +64,8 @@ In this example I have a test agent (green block) which can test the results.
 
 I have seperated the function of the server from the execution via workflow call (blue block)
 
+### Prisma AIRS MCP Relay
 
+There is the official release of the AIRS MCP Relay code at https://github.com/PaloAltoNetworks/pan-mcp-relay
+
+It does change often, so watch the project
