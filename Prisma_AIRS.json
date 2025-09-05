@@ -1,5 +1,5 @@
 {
-  "name": "Prisma AIRS",
+  "name": "Prisma_AIRS",
   "nodes": [
     {
       "parameters": {
@@ -76,16 +76,6 @@
               "id": "27116c2d-511c-4c01-aa2a-136eb757ab7b",
               "leftValue": "={{ $json.action }}",
               "rightValue": "allow",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            },
-            {
-              "id": "f45bf171-de4b-4923-80f2-55e4885de5d5",
-              "leftValue": "",
-              "rightValue": "",
               "operator": {
                 "type": "string",
                 "operation": "equals",
@@ -287,12 +277,12 @@
     },
     {
       "parameters": {
-        "jsCode": "// Define the mapping of keys to their descriptions\nconst descriptions = {\n  \"url_cats\": \"It's point to some unacceptable URLs.\",\n  \"dlp\": \"It's got sensitive data.\",\n  \"injection\": \"I don't like the way you are asking stuff.\",\n  \"toxic_content\": \"Go wash your mouth out.\",\n  \"malicious_code\": \"You are not fooling me with your naughty code.\",\n  \"agent\": \"Don't mess with my agent?.\",\n  \"topic_violation\": \"We are going off topic.\",\n  \"db_security\": \"Keep out of DB commands.\",\n  \"ungrounded\": \"We lost the plot.\"\n};\n\n// Main function to process detections\nfunction processDetections(data) {\n    const detectedMessages = [];\n\n    // Combine both detected objects for easier processing\n    const allDetections = {\n        ...(data.prompt_detected || {}),\n        ...(data.response_detected || {})\n    };\n\n    // Check each key in the combined detections\n    for (const key in allDetections) {\n        // If the value is true and a description exists, add it to our list\n        if (allDetections[key] === true && descriptions[key]) {\n            detectedMessages.push(descriptions[key]);\n        }\n    }\n    \n    // Join the messages with a comma and a space for better readability\n    // This RETURN statement is now correctly INSIDE the function\n    return detectedMessages.join(', ');\n}\n\n// Get the incoming JSON data from the first input item\nconst item = $input.first().json;\n\n// Call the function and immediately return its output\nconst resultingString = processDetections(item);\n\nif (resultingString) {\n  item.output = resultingString;\n}\n\n// Return the modified data\nreturn item;"
+        "jsCode": "// Define the mapping of keys to their descriptions\nconst descriptions = {\n  \"url_cats\": \"It's point to some unacceptable URLs.\",\n  \"dlp\": \"It's got sensitive data.\",\n  \"injection\": \"I don't like the way you are asking stuff.\",\n  \"toxic_content\": \"Go wash your mouth out.\",\n  \"malicious_code\": \"You are not fooling me with your naughty code.\",\n  \"agent\": \"Don't mess with my agent?.\",\n  \"topic_violation\": \"We are going off topic.\",\n  \"db_security\": \"Keep out of DB commands.\",\n  \"ungrounded\": \"We lost the plot.\"\n};\n\n// Main function to process detections\nfunction processDetections(data) {\n    const detectedMessages = [];\n\n    // Combine both detected objects for easier processing\n    const allDetections = {\n        ...(data.prompt_detected || {}),\n        ...(data.response_detected || {})\n    };\n\n    // Check each key in the combined detections\n    for (const key in allDetections) {\n        // If the value is true and a description exists, add it to our list\n        if (allDetections[key] === true && descriptions[key]) {\n            detectedMessages.push(descriptions[key]);\n        }\n    }\n    \n    // Join the messages with a comma and a space for better readability\n    // This RETURN statement is now correctly INSIDE the function\n    return detectedMessages.join(', ');\n}\n\n// Get the incoming JSON data from the first input item\nconst item = $input.first().json;\n\nif (item.action == \"allow\") {\n  item.output = $('AI Agent').first().json.output;\n} else {\n  // Call the function and immediately return its output\n  const resultingString = processDetections(item);\n  item.output = resultingString;\n} \n// Return the modified data\nreturn item;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        256,
+        288,
         528
       ],
       "id": "aad03197-44fe-4482-9438-f33faec0915e",
@@ -515,6 +505,11 @@
           }
         ]
       ]
+    },
+    "Format Response Output": {
+      "main": [
+        []
+      ]
     }
   },
   "active": false,
@@ -523,7 +518,7 @@
     "saveExecutionProgress": true,
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "1014370e-2fd7-48c5-8d97-fff9dc1c908b",
+  "versionId": "3768b836-56ba-4252-9521-97abe85037f2",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "67ec321cf69ca0d5d0bed4d0bf0906e0b93d73b921dd0ad4ecc70238407da3dc"
